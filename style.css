@@ -7,6 +7,17 @@
     font-family: 'Kdam Thmor Pro', sans-serif;
 }
 
+.d-flex{
+    display: flex;
+}
+.alg-center{
+    align-items: center;
+}
+
+.border-black{
+    border: 3px solid black;
+}
+
 .nav{
     padding: 0 20px;
     height: 100%;
@@ -31,6 +42,14 @@ main{
     color: white;;
 }
 
+#final-result{
+    position:absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 2rem;
+    transform: translate(-50%, -50%);
+}
+
 .point-square{
     background-color: rgb(37, 69, 70);;
     color:white;
@@ -40,15 +59,9 @@ main{
     background-color: red;
 }
 
-.d-flex{
-    display: flex;
-}
-.alg-center{
-    align-items: center;
-}
-
-.border-black{
-    border: 3px solid black;
+.end-game{
+    pointer-events: none;
+    background-color: rgba(000, 000, 000, 0.6);
 }
 
 .container-grid{

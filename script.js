@@ -15,15 +15,23 @@ come argomento della funzione;
 let blackList = [];
 const generateButton = document.getElementById('generate-grid-btn');
 const gridWrapper = document.getElementById('grid-wrapper');
+const finalResult = document.getElementById('final-result')
+const messageNewgame = 'Clicca sul tasto "Avvia il gioco " per giocare di nuovo';
 let numBox;
 let isBomb;
 let bombNumber;
 let totPoints = 0;
 generateButton.addEventListener('click',function(){
+    // RESET 
+    finalResult.innerHTML = ""
+    gridWrapper.innerHTML = "" // Text Content = "" per rimuovere la vecchia tabella in modo che la nuova non si aggiunga alla vecchia 
+    gridWrapper.classList.remove('end-game')
+    console.clear();
     blackList = [""];
+
     const diffSelection = document.getElementById('difficult-selection').value; // Prendo il valore scelto dall'utente
     let nameSquareClass; // Variabile a cui assegno il nome della classe da utilizzare per le box
-    gridWrapper.textContent = "" // Text Content = "" per rimuovere la vecchia tabella in modo che la nuova non si aggiunga alla vecchia 
+   
     
     if(diffSelection == 'easy'){
         numBox = 100;
@@ -37,7 +45,7 @@ generateButton.addEventListener('click',function(){
     }
     gridWrapper.classList.add('border-black')
     // Popoliamo il nostro array
-    for(let r = 0; r < 16 ; r++){
+    for(let i = 0; i < 16 ; i++){
         bombNumber = generateRandomBomb(blackList,1,numBox);
         blackList.push(bombNumber);
        }
@@ -50,6 +58,8 @@ generateButton.addEventListener('click',function(){
         if(blackList.includes(i+1) == true){
             newBox.classList.add('bomb-square');
             console.log('Questa è una bomba alla posizione ' + (i+1) );
+            gridWrapper.classList.add('end-game')
+            finalResult.innerHTML = 'HAI PRESO UNA BOMBA, HAI PERSO!! <br> ' + messageNewgame + '<br> Punteggio finale : ' + totPoints ;
         }
         else{
             if(newBox.classList.contains('point-square') == true){
@@ -58,14 +68,17 @@ generateButton.addEventListener('click',function(){
             else{
                 newBox.classList.add('point-square');
                 totPoints ++;
-                console.log('Il tuo punteggio è di : ' + totPoints + ' punti');
+                if(totPoints == numBox - 16){
+                    gridWrapper.classList.add('end-game')
+                    finalResult.innerHTML = 'COMPLIMENTI HAI VINTO !! <br> ' + messageNewgame ;
+                }
             }
         }   
     })
        gridWrapper.append(newBox);
     }
 })
-console.log('Punteggio finale : ' +totPoints);
+
 
 
 function createBox(squareType){
@@ -78,7 +91,7 @@ function generateRandomBomb(listBomb, min, max){
     let newRandomNumber;
     let isNumberValid = false;
     while( isNumberValid === false){
-        newRandomNumber = Math.floor(Math.random() * (max + 1) - min) + min;
+        newRandomNumber = Math.floor(Math.random() * max - min + 1) + min;
         if ( !listBomb.includes(newRandomNumber)) {
             isNumberValid = true;
         }
