@@ -31,9 +31,13 @@ main{
     color: white;;
 }
 
-.active{
+.point-square{
     background-color: rgb(37, 69, 70);;
     color:white;
+}
+
+.bomb-square{
+    background-color: red;
 }
 
 .d-flex{

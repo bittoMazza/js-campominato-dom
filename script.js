@@ -7,9 +7,16 @@ qui dentro aggiungiamo il toggle('active') e stampiamo il log passando l'indice
 come argomento della funzione;
 */
 
+// SECONDA PARTE ESERCIZIO 
+
+/* Per creare le bombe dobbiamo fare una funzione che viene ripetuta 16 volte
+*/
+
+let listBomb = [];
 const generateButton = document.getElementById('generate-grid-btn');
 const gridWrapper = document.getElementById('grid-wrapper');
 let numBox;
+let bombNumber;
 generateButton.addEventListener('click',function(){
     const diffSelection = document.getElementById('difficult-selection').value; // Prendo il valore scelto dall'utente
     let nameSquareClass; // Variabile a cui assegno il nome della classe da utilizzare per le box
@@ -27,25 +34,34 @@ generateButton.addEventListener('click',function(){
     }
     gridWrapper.classList.add('border-black')
     for(let i = 0 ; i < numBox ; i++){
-       const newBox = createBox(i,nameSquareClass); 
-       newBox.innerHTML = i + 1;
+       const newBox = createBox(nameSquareClass);
+       if(i < 16){
+        bombNumber = generateRandomBomb(1,numBox);
+       }
+       newBox.addEventListener('click',function(){
+        if(newBox.classList.contains('point-square')){
+            console.log('Hai già cliccato questo elemento : ' + (index + 1))
+        }
+        else{
+            newBox.classList.add('point-square')
+            console.log('Hai cliccato la casella numero : ' + (index + 1));
+        }       
+    })
        gridWrapper.append(newBox);
     }
 })
 
 
-function createBox(index,squareType){
+function createBox(squareType){
     let newSquare = document.createElement('div');
     newSquare.classList.add('square',squareType,'border-black')
-    newSquare.addEventListener('click',function(){
-        if(newSquare.classList.contains('active')){
-            console.log('Hai già cliccato questo elemento : ' + (index + 1))
-        }
-        else{
-            newSquare.classList.add('active')
-            console.log('Hai cliccato la casella numero : ' + (index + 1));
-        }       
-    })
     return newSquare;
 }
 
+function generateRandomBomb(listBomb,min,max){
+    let newNumBomb = Math.floor(Math.random() (max - min + 1) - min)
+    while(listBomb.include(newNumBomb) == true){
+        newNumBomb = Math.floor(Math.random() (max - min + 1) - min)
+    }
+    return newNumBomb;
+}
