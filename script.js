@@ -14,7 +14,6 @@ const gridWrapper = document.getElementById('grid-wrapper');
 const finalResult = document.getElementById('final-result')
 const messageNewgame = 'Clicca sul tasto "Avvia il gioco " per giocare di nuovo';
 let numBox;
-let isBomb;
 let bombNumber;
 let totPoints = 0;
 generateButton.addEventListener('click',function(){
@@ -43,7 +42,7 @@ generateButton.addEventListener('click',function(){
     }
 
     // Popoliamo il nostro array
-    for(let i = 0; i < 16 ; i++){
+    for(let i = 0; i < 1 ; i++){
         bombNumber = generateRandomBomb(blackList,1,numBox);
         blackList.push(bombNumber);
        }
@@ -55,9 +54,8 @@ generateButton.addEventListener('click',function(){
         // Verifichiamo se all'interno dell'array c'è un numero uguale all'indice attuale + 1
         // Se c'è allora il quadrato sarò una bomba
         if(blackList.includes(i+1) == true){
-            newBox.classList.add('bomb-square');
-            gridWrapper.classList.add('end-game')
-            finalResult.innerHTML = 'HAI PRESO UNA BOMBA, HAI PERSO!! <br> ' + messageNewgame + '<br> Punteggio finale : ' + totPoints ;
+            newBox.classList.add('bomb-square');          
+            finalResult.innerHTML = finalResultCalc(newBox,totPoints,gridWrapper,messageNewgame);
         }
         else{
             if(newBox.classList.contains('point-square') == true){
@@ -67,8 +65,7 @@ generateButton.addEventListener('click',function(){
                 newBox.classList.add('point-square');
                 totPoints ++;
                 if(totPoints == numBox - 16){
-                    gridWrapper.classList.add('end-game')
-                    finalResult.innerHTML = 'COMPLIMENTI HAI VINTO !! <br> ' + messageNewgame ;
+                    finalResult.innerHTML = finalResultCalc(newBox,totPoints,gridWrapper,messageNewgame);
                 }
             }
         }   
@@ -76,6 +73,21 @@ generateButton.addEventListener('click',function(){
        gridWrapper.append(newBox);
     }
 })
+
+// Funzione per creare il messaggio finale
+function finalResultCalc(newBlock,totalPoints,gridContainer,messageGameFinish){
+    let finalMessage;
+    gridContainer.classList.add('end-game')
+    if(newBlock.classList.contains('bomb-square')){
+        finalMessage = 'HAI PRESO UNA BOMBA, HAI PERSO!! <br> ' + messageGameFinish + '<br> Punteggio finale : ' + totalPoints ;
+    }
+    else{
+        finalMessage = 'COMPLIMENTI HAI VINTO !! <br> ' + messageGameFinish ;
+    }
+    return finalMessage;
+
+    
+}
 
 
 function createBox(squareType){
