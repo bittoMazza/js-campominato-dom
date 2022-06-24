@@ -20,6 +20,7 @@ let isBomb;
 let bombNumber;
 let totPoints = 0;
 generateButton.addEventListener('click',function(){
+    blackList = [""];
     const diffSelection = document.getElementById('difficult-selection').value; // Prendo il valore scelto dall'utente
     let nameSquareClass; // Variabile a cui assegno il nome della classe da utilizzare per le box
     gridWrapper.textContent = "" // Text Content = "" per rimuovere la vecchia tabella in modo che la nuova non si aggiunga alla vecchia 
@@ -35,15 +36,20 @@ generateButton.addEventListener('click',function(){
         nameSquareClass = 'square-hard'
     }
     gridWrapper.classList.add('border-black')
+    // Popoliamo il nostro array
+    for(let r = 0; r < 16 ; r++){
+        bombNumber = generateRandomBomb(blackList,1,numBox);
+        blackList.push(bombNumber);
+       }
     for(let i = 0 ; i < numBox ; i++){
        const newBox = createBox(nameSquareClass);
-       if(i < 16){
-        bombNumber = generateRandomBomb(blackList,1,numBox);
-       }
+       // Creiamo i nostri quadrati 
        newBox.addEventListener('click',function(){
-        if(blackList.includes(bombNumber) == i){
+        // Verifichiamo se all'interno dell'array c'è un numero uguale all'indice attuale + 1
+        // Se c'è allora il quadrato sarò una bomba
+        if(blackList.includes(i+1) == true){
             newBox.classList.add('bomb-square');
-            console.log('Questa è una bomba' + bombNumber);
+            console.log('Questa è una bomba alla posizione ' + (i+1) );
         }
         else{
             if(newBox.classList.contains('point-square') == true){
@@ -52,13 +58,14 @@ generateButton.addEventListener('click',function(){
             else{
                 newBox.classList.add('point-square');
                 totPoints ++;
-                console.log(totPoints);
+                console.log('Il tuo punteggio è di : ' + totPoints + ' punti');
             }
         }   
     })
        gridWrapper.append(newBox);
     }
 })
+console.log('Punteggio finale : ' +totPoints);
 
 
 function createBox(squareType){
@@ -67,10 +74,15 @@ function createBox(squareType){
     return newSquare;
 }
 
-function generateRandomBomb(listBomb,min,max){
-    let newNumBomb = Math.floor(Math.random() * (max - min + 1) + min);
-    while(listBomb.includes(newNumBomb) == true){
-        newNumBomb = Math.floor(Math.random() * (max - min + 1) + min);
+function generateRandomBomb(listBomb, min, max){
+    let newRandomNumber;
+    let isNumberValid = false;
+    while( isNumberValid === false){
+        newRandomNumber = Math.floor(Math.random() * (max + 1) - min) + min;
+        if ( !listBomb.includes(newRandomNumber)) {
+            isNumberValid = true;
+        }
     }
-    return newNumBomb;
+    console.log(newRandomNumber)
+    return newRandomNumber;
 }
