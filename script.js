@@ -56,7 +56,6 @@ generateButton.addEventListener('click',function(){
         // Se c'è allora il quadrato sarò una bomba
         if(blackList.includes(i+1) == true){
             newBox.classList.add('bomb-square');
-            console.log('Questa è una bomba alla posizione ' + (i+1) );
             gridWrapper.classList.add('end-game')
             finalResult.innerHTML = 'HAI PRESO UNA BOMBA, HAI PERSO!! <br> ' + messageNewgame + '<br> Punteggio finale : ' + totPoints ;
         }

@@ -57,6 +57,8 @@ main{
 
 .bomb-square{
     background-color: red;
+    background-image: url(./img/Minesweeper1.webp);
+    background-size: cover;
 }
 
 .end-game{
