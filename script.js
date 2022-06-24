@@ -12,11 +12,13 @@ come argomento della funzione;
 /* Per creare le bombe dobbiamo fare una funzione che viene ripetuta 16 volte
 */
 
-let listBomb = [];
+let blackList = [];
 const generateButton = document.getElementById('generate-grid-btn');
 const gridWrapper = document.getElementById('grid-wrapper');
 let numBox;
+let isBomb;
 let bombNumber;
+let totPoints = 0;
 generateButton.addEventListener('click',function(){
     const diffSelection = document.getElementById('difficult-selection').value; // Prendo il valore scelto dall'utente
     let nameSquareClass; // Variabile a cui assegno il nome della classe da utilizzare per le box
@@ -36,16 +38,23 @@ generateButton.addEventListener('click',function(){
     for(let i = 0 ; i < numBox ; i++){
        const newBox = createBox(nameSquareClass);
        if(i < 16){
-        bombNumber = generateRandomBomb(1,numBox);
+        bombNumber = generateRandomBomb(blackList,1,numBox);
        }
        newBox.addEventListener('click',function(){
-        if(newBox.classList.contains('point-square')){
-            console.log('Hai già cliccato questo elemento : ' + (index + 1))
+        if(blackList.includes(bombNumber) == i){
+            newBox.classList.add('bomb-square');
+            console.log('Questa è una bomba' + bombNumber);
         }
         else{
-            newBox.classList.add('point-square')
-            console.log('Hai cliccato la casella numero : ' + (index + 1));
-        }       
+            if(newBox.classList.contains('point-square') == true){
+                console.log('Hai già cliccato questa casella')            
+            }
+            else{
+                newBox.classList.add('point-square');
+                totPoints ++;
+                console.log(totPoints);
+            }
+        }   
     })
        gridWrapper.append(newBox);
     }
@@ -59,9 +68,9 @@ function createBox(squareType){
 }
 
 function generateRandomBomb(listBomb,min,max){
-    let newNumBomb = Math.floor(Math.random() (max - min + 1) - min)
-    while(listBomb.include(newNumBomb) == true){
-        newNumBomb = Math.floor(Math.random() (max - min + 1) - min)
+    let newNumBomb = Math.floor(Math.random() * (max - min + 1) + min);
+    while(listBomb.includes(newNumBomb) == true){
+        newNumBomb = Math.floor(Math.random() * (max - min + 1) + min);
     }
     return newNumBomb;
 }
