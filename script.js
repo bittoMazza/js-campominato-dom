@@ -42,7 +42,7 @@ generateButton.addEventListener('click',function(){
     }
 
     // Popoliamo il nostro array
-    for(let i = 0; i < 1 ; i++){
+    for(let i = 0; i < 16 ; i++){
         bombNumber = generateRandomBomb(blackList,1,numBox);
         blackList.push(bombNumber);
        }
